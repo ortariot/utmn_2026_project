@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  chardb:
+    container_name: char_db
+    image: postgres:latest
+    volumes:
+      - chars_data:/var/lib/postgesql/data
+    environment:
+      - POSTGRES_DB=chars
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 55432:5432
+
+    # restart: unless-stoped
+    # logging:
+
+volumes:
+  chars_data:
+    name: chars_data
+
+
+    
