@@ -82,7 +82,7 @@ async def update_char(
             detail=f"char with {char_id} not found",
         )
 
-    print("!!!")
+    
     res = await service.update_char(char_id, char_data)
 
     return res
