@@ -40,7 +40,7 @@ class CharUpdate(BaseModel):
     race: Optional[str] = None
     can_fly: Optional[bool] = None
     specialization: Optional[str] = None
-# чтобы была возможность не передавать каие-то атрибуты,
+# чтобы была возможность не передавать некоторые атрибуты,
 # нужно задать им значения по умолчанию
 # что я благополучно и забыл)))
 
