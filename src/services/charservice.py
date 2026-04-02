@@ -48,7 +48,9 @@ class CharService:
 
         return await self.repo.get_all(skip, limit)
 
-    async def get_char_service(
-        repo: CharRepository = Depends(get_char_repository),
-    ) -> CharService:
-        return CharService(repo)
+
+
+async def get_char_service(
+    repo: CharRepository = Depends(get_char_repository),
+) -> CharService:
+    return CharService(repo)
