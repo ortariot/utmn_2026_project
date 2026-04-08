@@ -20,16 +20,29 @@ class CharBase(BaseModel):
 class CharCreate(CharBase):
     pass
 
+# было:
+# class CharUpdate(BaseModel):
+#     name: Optional[str]
+#     gender: Optional[Gender]
+#     is_human: Optional[bool]
+#     power: Optional[int]
+#     race: Optional[str]
+#     can_fly: Optional[bool]
+#     specialization: Optional[str]
 
+
+# стало:
 class CharUpdate(BaseModel):
-    name: Optional[str]
-    gender: Optional[Gender]
-    is_human: Optional[bool]
-    power: Optional[int]
-    race: Optional[str]
-    can_fly: Optional[bool]
-    specialization: Optional[str]
-
+    name: Optional[str] = None
+    gender: Optional[Gender] = None
+    is_human: Optional[bool] = None
+    power: Optional[int] = None
+    race: Optional[str] = None
+    can_fly: Optional[bool] = None
+    specialization: Optional[str] = None
+# чтобы была возможность не передавать некоторые атрибуты,
+# нужно задать им значения по умолчанию
+# что я благополучно и забыл)))
 
 class CharInDB(CharBase):
     id: UUID
