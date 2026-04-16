@@ -41,6 +41,7 @@ class Char(Base, BaseModelMixin):
     race = Column(String, nullable=False)
     can_fly = Column(Boolean, default=False)
     specialization = Column(String, nullable=True)
+    biography = Column(String, nullable=True)
 
 
     account_id = Column(
