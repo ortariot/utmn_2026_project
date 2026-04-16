@@ -5,7 +5,6 @@ from fastapi import APIRouter, Depends, status, HTTPException, Query
 from services.aiservice import AiService, get_ai_service
 
 from schemas.charschema import (
-
     CharInDB,
     AiCharCreate,
 )
@@ -24,8 +23,6 @@ async def create_char(
 ):
     res = await service.ai_char_create(char_data.promt)
     return res
-
-
 
 
 @router.post(
