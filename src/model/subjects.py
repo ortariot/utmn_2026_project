@@ -13,6 +13,8 @@ class Account(Base, BaseModelMixin):
 
     username = Column(String)
     email = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    # status = Column(Boolean, nullable=False, default=True
 
 
     def __repr__(self) -> str:
