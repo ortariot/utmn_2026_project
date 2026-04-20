@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status, HTTPException, Query
 from schemas.accschemas import AccResponse, AccRegistrate
 from schemas.authschemas import Token, Login
 from services.accservice import AccService, get_acc_service
-from services.authservice import AuthService, get_reg_service
+from services.authservice import AuthService, get_reg_service, get_auth_service
 from configs.settings import settings
 
 router = APIRouter()
@@ -37,3 +37,12 @@ async def login_of_access_token(
 
 
     return  {"access_token": access_token, "token_type": "bearer" }
+
+
+@router.get("/protected")
+async def protect(service: AuthService = Depends(get_auth_service)):
+    
+    current_user = await service.get_curent_acc()
+
+
+    return {"access": "ok"} 

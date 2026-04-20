@@ -2,6 +2,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 
 from services.charservice import CharService, get_char_service
+from services.authservice import AuthService, get_auth_service
 from schemas.charschema import CharCreate, CharUpdate, CharInDB
 
 router = APIRouter()
@@ -31,7 +32,10 @@ async def get_all_chars(
     skip: int = Query(0, ge=0, description="offset"),
     limit: int = Query(100, ge=1, le=1000, description="limit"),
     service: CharService = Depends(get_char_service),
-):
+    auth_service: AuthService = Depends(get_auth_service)
+):  
+    
+    await auth_service.get_curent_acc()
     chars = await service.get_all_chars(skip, limit)
 
     if chars is None:

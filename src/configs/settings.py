@@ -24,7 +24,8 @@ class ApiConfig(BaseSettings):
     secret_key: str = "my_secret_key"
     algorithm: str = "HS256"
 
-
+    ai_api_key: str = "my api key"
+    giga_api_key: str = "my giga_api key"
 
     @model_validator(mode="after")
     def set_db_dsl(self):
