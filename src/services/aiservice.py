@@ -12,6 +12,7 @@ from fastapi import Depends, HTTPException, status
 from repositories.charrepo import CharRepository, get_char_repository
 from configs.settings import settings
 from schemas.charschema import CharCreate, CharInDB
+from taskstore import task_store
 
 
 class AiService:
@@ -114,6 +115,16 @@ class AiService:
         char = await self.repo.create(data.model_dump())
 
         return char
+    
+    async def create_char_backround(self, task_id: str,  promt: str):
+        try:
+            res = await self.ai_char_create(promt)
+            task_store[task_id] = {"status": "comleted", "result": res}
+        except Exception as e:
+            task_store[task_id] = {"status": "error", "error": e}
+
+
+
 
 
 async def get_ai_service(

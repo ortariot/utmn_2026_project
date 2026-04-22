@@ -12,10 +12,10 @@ class ApiConfig(BaseSettings):
     project_port: int = 8000
     project_host: str = "127.0.0.1"
 
-    db_user: str = "postgres"
-    db_password: str = "postgres"
-    db_name: str = "postgres"
-    db_host: str = "localhost"
+    db_user: str = "user"
+    db_password: str = "password"
+    db_name: str = "chars"
+    db_host: str = "chardb"
     db_port: int = 5432
 
     db_dsl: URL | None = None
