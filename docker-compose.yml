@@ -16,9 +16,63 @@ services:
     # restart: unless-stoped
     # logging:
 
+  test_db:
+    container_name: test_db
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=chars
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 55433:5432
+
+    # restart: unless-stoped
+    # logging:
+
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  celery-worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+      target: worker
+    environment:
+      - AI_API_KEY=${AI_API_KEY}
+      - REDIS_URL="redis://redis:6379/0"
+    volumes:
+      - ./src:/app/
+      - ./worker/celery_app.py:/app/celery_app.py
+      - ./worker/ai_task:/app/ai_task
+    depends_on:
+      - redis
+  celery-flower:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+      target: flower
+    environment:
+      # - AI_API_KEY=${AI_API_KEY}
+      - REDIS_URL="redis://redis:6379/0"
+    volumes:
+      - ./src:/app/
+      - ./worker/celery_app.py:/app/celery_app.py
+      - ./worker/ai_task:/app/ai_task
+    depends_on:
+      - redis
+      - celery-worker
+    ports:
+      - 5555:5555
+
+  
+
 volumes:
   chars_data:
     name: chars_data
+
 
 
     
