@@ -35,8 +35,7 @@ class CharUpdate(BaseModel):
 class CharInDB(CharBase):
     id: UUID
 
-
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True) 
 
 
 class AiCharCreate(BaseModel):

@@ -20,5 +20,5 @@ celery_app.conf.update(
     task_track_started=True,
     task_time_limit=30 * 60,
     task_soft_time_limit=25 * 60, 
-    include=['ai_tasks.tasks'] 
+    include=['ai_task.tasks'] 
 )

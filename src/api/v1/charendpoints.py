@@ -1,5 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, status, HTTPException, Query
+from fastapi_cache.decorator import cache
+
 
 from services.charservice import CharService, get_char_service
 from services.authservice import AuthService, get_auth_service
@@ -53,6 +55,7 @@ async def get_all_chars(
     status_code=status.HTTP_200_OK,
     summary="get char by id",
 )
+@cache(expire=90)
 async def get_char(
     char_id: UUID, service: CharService = Depends(get_char_service)
 ) -> CharInDB:

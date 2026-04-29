@@ -25,7 +25,7 @@ class Account(Base, BaseModelMixin):
         pass
 
 
-class Gender(Enum):
+class Gender(str, Enum):
     MALE = "male"
     FEMALE = "female" 
 

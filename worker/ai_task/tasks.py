@@ -8,7 +8,21 @@ from repositories.charrepo import CharRepository
 from schemas.charschema import CharInDB
 
 
-@celery_app.task(bind=True, name="crate_ai_char")
+# Работло и так как было но не стабильно иногда давало ошибки вроде "Future attached to a different loop"
+# чтобы их избежть применен костыль
+# собственно, как я и говорил celery c asincio работает не очень хорошо
+_loop = None
+
+
+def _get_loop():
+    global _loop
+    if _loop is None or _loop.is_closed():
+        _loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(_loop)
+    return _loop
+
+
+@celery_app.task(bind=True, name="create_ai_char")
 def create_ai_char_task(self, promt: str) -> dict:
 
     task_id = self.request.id
@@ -18,18 +32,21 @@ def create_ai_char_task(self, promt: str) -> dict:
             repo = CharRepository(session)
             ai_service = AiService(repo)
 
-            orm_result = await ai_service.ai_char_create(promt)
+            try:
+                orm_result = await ai_service.ai_char_create(promt)
+                result = CharInDB.model_validate(orm_result)
+                return result.model_dump()
+            finally:
+                # Обязательно закрываем httpx.AsyncClient внутри AsyncOpenAI,
+                # чтобы не копились подключения от предыдущих вызовов
+                await ai_service.client.close()
 
-            result = CharInDB.model_validate(orm_result)
-
-            return result.model_dump()
-        
-    
     try:
-        res = asyncio.run(_run())
-        return {"status": "SUCCESS", "result": res}
+        loop = _get_loop()
+        res = loop.run_until_complete(_run())
+        return {"status": "success", "result": res}
     except Exception as e:
-        return {"status": "FALL", "result": str(e)}
+        return {"status": "failed", "result": str(e)}
         
 
 
