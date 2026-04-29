@@ -132,4 +132,4 @@ async def celery_task_by_id(task_id: str):
 
     return TaskResult(status="success", data="no data")
 
-    #  проблемы была в том что я не учёл что celery передаёт статусы в верхнем решистре испрвлено методом lower()
+    #  проблемы была в том что я не учёл что celery передаёт статусы в верхнем регистре испрвлено методом lower()
